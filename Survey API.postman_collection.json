@@ -43,7 +43,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "",
+					"raw": "[\r\n    {\r\n        \"question\": \"In which department do you work?\",\r\n        \"options\": [\r\n            \"Sales\",\r\n            \"Accounts\"\r\n        ]\r\n    },\r\n    {\r\n        \"question\": \"What is your company's annual revenue?\",\r\n        \"options\": [\r\n            \"5k-100k\",\r\n            \"101k-10000k\"\r\n        ]\r\n    }\r\n]",
 					"options": {
 						"raw": {
 							"language": "json"

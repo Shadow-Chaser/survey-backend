@@ -2,6 +2,7 @@ const {
   submitSurveyAnswer,
   getSurveyAnswersByUser,
   getSurveyAnswersByQuestion,
+  getAllSurveyAnswers,
 } = require("../controllers/surveyAnswer.controller");
 
 const {
@@ -14,6 +15,7 @@ const router = require("express").Router();
 router.route("/survey-question").post(createSurveyQuestion);
 router.route("/survey-questions").get(getAllSurveyQuestion);
 router.route("/survey-answer").post(submitSurveyAnswer);
+router.route("/survey-answers").get(getAllSurveyAnswers);
 router.route("/survey-answers/user/:id").get(getSurveyAnswersByUser);
 router.route("/survey-answers/question/:id").get(getSurveyAnswersByQuestion);
 

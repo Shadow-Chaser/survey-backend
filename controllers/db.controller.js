@@ -4,7 +4,7 @@ const readDB = (collection) => {
   return new Promise((resolve, reject) => {
     fs.readFile(process.cwd() + `/db/${collection}`, "utf-8", (err, data) => {
       if (err) {
-        reject("something went wrong");
+        reject("Something went wrong");
       } else {
         resolve(JSON.parse(data));
       }
@@ -19,7 +19,7 @@ const writeDB = (data, collection) => {
       JSON.stringify(data),
       (err) => {
         if (err) {
-          reject("something went wrong");
+          reject("Something went wrong");
         } else {
           resolve(JSON.stringify(data));
         }

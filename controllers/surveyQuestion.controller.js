@@ -36,7 +36,23 @@ const getAllSurveyQuestion = async (req, res) => {
   }
 };
 
+const getSurveyQuestionById = async (req, res) => {
+  const id = req.params.id;
+  try {
+    const result = await readDB("surveyQuestions.json");
+    const surveyQuestion = result.find((e) => e.id === id);
+    if (surveyQuestion) {
+      return res.status(200).send(surveyQuestion);
+    } else {
+      return res.status(404).send("Survey question not found");
+    }
+  } catch (error) {
+    return res.status(400).send("An error occurred!");
+  }
+};
+
 module.exports = {
   createSurveyQuestion,
   getAllSurveyQuestion,
+  getSurveyQuestionById,
 };

@@ -8,11 +8,13 @@ const {
 const {
   createSurveyQuestion,
   getAllSurveyQuestion,
+  getSurveyQuestionById,
 } = require("../controllers/surveyQuestion.controller");
 
 const router = require("express").Router();
 
 router.route("/survey-question").post(createSurveyQuestion);
+router.route("/survey-question/:id").get(getSurveyQuestionById);
 router.route("/survey-questions").get(getAllSurveyQuestion);
 router.route("/survey-answer").post(submitSurveyAnswer);
 router.route("/survey-answers").get(getAllSurveyAnswers);

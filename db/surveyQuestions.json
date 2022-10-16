@@ -1,1 +1,56 @@
-[{"question":"What is your favorite color?","options":["Blue","Green","Red","Yellow"],"id":"b84db8aa7d761"},{"question":"What is your  occupation?","options":["Doctor","Teacher","Farmer","Others"],"id":"f9e627817a232"},{"question":"What is your favorite drink?","options":["Tea","Cofee","Soda","Others"],"id":"fe11b65f46196"},{"question":"What is your Gender?","options":["Male","Female"],"id":"10a472b290946"},{"question":"How are you?","options":["Good","Bad"],"id":"3008fff834639"},{"question":"What is your Nationality?","options":["Bengali","Indian"],"id":"a0b047c772180"},{"question":"Which country do you want to go for a tour?","options":["India","Turkey","Canada"],"id":"b246a7bb4f893"},{"question":"Whhich department you are studying now?","options":["CSE","EEE","CEE","BBA"],"id":"448833921e37"}]
+[
+  {
+    "question": "What is your favorite color?",
+    "options": ["Blue", "Green", "Red", "Yellow"],
+    "id": "b84db8aa7d761"
+  },
+  {
+    "question": "What is your  occupation?",
+    "options": ["Doctor", "Teacher", "Farmer", "Others"],
+    "id": "f9e627817a232"
+  },
+  {
+    "question": "What is your favorite drink?",
+    "options": ["Tea", "Cofee", "Soda", "Others"],
+    "id": "fe11b65f46196"
+  },
+  {
+    "question": "What is your Gender?",
+    "options": ["Male", "Female"],
+    "id": "10a472b290946"
+  },
+  {
+    "question": "How are you?",
+    "options": ["Good", "Bad"],
+    "id": "3008fff834639"
+  },
+  {
+    "question": "What is your Nationality?",
+    "options": ["Bengali", "Indian"],
+    "id": "a0b047c772180"
+  },
+  {
+    "question": "Which country do you want to go for a tour?",
+    "options": ["India", "Turkey", "Canada"],
+    "id": "b246a7bb4f893"
+  },
+  {
+    "question": "Which department you are studying now?",
+    "options": ["CSE", "EEE", "CEE", "BBA"],
+    "id": "448833921e37"
+  },
+  {
+    "question": "What vertical/industry best describes your company?",
+    "options": [
+      "Ecommerce - Retail",
+      "Ecommerce - Travel",
+      "Ecommerce - Other"
+    ],
+    "id": "1e3a955d29908"
+  },
+  {
+    "question": "What best describes your role?",
+    "options": ["Manager", "Associate", "Team Member", "Other"],
+    "id": "64ed3eef9a913"
+  }
+]

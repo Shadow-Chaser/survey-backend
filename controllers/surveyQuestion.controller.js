@@ -25,6 +25,37 @@ const createSurveyQuestion = async (req, res) => {
   }
 };
 
+const createMultipleSurveyQuestion = async (req, res) => {
+  let surveyQuestions = req.body;
+
+  if (!Array.isArray(surveyQuestions))
+    return res.status(400).send("Request body must be an array!");
+
+  for (let i = 0; i < surveyQuestions.length; i++) {
+    const uniqueId = await generateUniqueId();
+    const { error } = surveyQuestionSchema.validate(surveyQuestions[i]);
+    if (error) return res.status(400).send(error.message);
+    surveyQuestions[i]["id"] = uniqueId;
+  }
+
+  try {
+    const data = await readDB("surveyQuestions.json");
+    const result = await writeDB(
+      [...data, ...surveyQuestions],
+      "surveyQuestions.json"
+    );
+
+    if (result) {
+      return res.status(201).send({
+        message: "Survey questions has been created successfully!",
+        data: surveyQuestions,
+      });
+    }
+  } catch (error) {
+    return res.status(400).send("An error occurred!");
+  }
+};
+
 const getAllSurveyQuestion = async (req, res) => {
   try {
     const result = await readDB("surveyQuestions.json");
@@ -55,4 +86,5 @@ module.exports = {
   createSurveyQuestion,
   getAllSurveyQuestion,
   getSurveyQuestionById,
+  createMultipleSurveyQuestion,
 };

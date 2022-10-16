@@ -54,5 +54,19 @@
     "question": "Which country do you want to go for a tour?",
     "answer": "Turkey",
     "id": "3cc3876db7520"
+  },
+  {
+    "userId": "eun378hdh93",
+    "questionId": "f9e627817a232",
+    "question": "What is your  occupation?",
+    "answer": "Farmer",
+    "id": "3585fae45d432"
+  },
+  {
+    "userId": "eun378hdh93",
+    "questionId": "10a472b290946",
+    "question": "What is your Gender?",
+    "answer": "Male",
+    "id": "183d9dd804436"
   }
 ]

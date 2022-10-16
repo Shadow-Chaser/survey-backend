@@ -1,0 +1,32 @@
+[
+  {
+    "question": "What is your favorite color?",
+    "options": ["Blue", "Green", "Red", "Yellow"],
+    "id": "b84db8aa7d761"
+  },
+  {
+    "question": "What is your  occupation?",
+    "options": ["Doctor", "Teacher", "Farmer", "Others"],
+    "id": "f9e627817a232"
+  },
+  {
+    "question": "What is your favorite drink?",
+    "options": ["Tea", "Cofee", "Soda", "Others"],
+    "id": "fe11b65f46196"
+  },
+  {
+    "question": "What is your Gender?",
+    "options": ["Male", "Female"],
+    "id": "10a472b290946"
+  },
+  {
+    "question": "How are you?",
+    "options": ["Good", "Bad"],
+    "id": "3008fff834639"
+  },
+  {
+    "question": "What is your Nationality?",
+    "options": ["Bengali", "Indian"],
+    "id": "a0b047c772180"
+  }
+]

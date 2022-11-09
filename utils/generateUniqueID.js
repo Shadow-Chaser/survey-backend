@@ -1,7 +1,7 @@
 const crypto = require("crypto");
 
 const generateUniqueId = async () => {
-  const randomString = await crypto.randomBytes(5).toString("hex");
+  const randomString = crypto.randomBytes(5).toString("hex");
   const getMilliseconds = new Date().getMilliseconds();
   const uniqueId = randomString + getMilliseconds;
   return uniqueId;

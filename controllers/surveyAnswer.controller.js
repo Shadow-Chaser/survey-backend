@@ -12,12 +12,10 @@ if (process.env.DB_MODE === "JSON") {
       try {
         const result = await fileSystemService.submitSurvey(value);
 
-        if (result) {
-          return res.status(201).send({
-            message: "Survey answer has been submitted successfully!",
-            data: result,
-          });
-        }
+        return res.status(201).send({
+          message: "Survey answer has been submitted successfully!",
+          data: result,
+        });
       } catch (error) {
         return res.status(400).send(error.message);
       }
@@ -33,12 +31,10 @@ if (process.env.DB_MODE === "JSON") {
       try {
         const result = await mongoService.submitSurvey(value);
 
-        if (result) {
-          return res.status(201).send({
-            message: "Survey answer has been created successfully!",
-            data: result,
-          });
-        }
+        return res.status(201).send({
+          message: "Survey answer has been created successfully!",
+          data: result,
+        });
       } catch (error) {
         return res.status(400).send(error.message);
       }

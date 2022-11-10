@@ -1,25 +1,47 @@
 const surveyAnswerSchema = require("../schemas/surveyAnswer.schema");
-const fileSystem = require("../services/fs.service");
+const fileSystemService = require("../services/fs.service");
+const mongoService = require("../services/mongo.service");
 
-const submitSurveyAnswer = async (req, res) => {
-  const { error, value } = surveyAnswerSchema.validate(req.body);
+if (process.env.DB_MODE === "JSON") {
+  module.exports = {
+    submitSurveyAnswer: async (req, res) => {
+      const { error, value } = surveyAnswerSchema.validate(req.body);
 
-  if (error) return res.status(400).send(error.message);
+      if (error) return res.status(400).send(error.message);
 
-  try {
-    const result = await fileSystem.submitSurvey(req.body);
+      try {
+        const result = await fileSystemService.submitSurvey(value);
 
-    if (result) {
-      return res.status(201).send({
-        message: "Survey Answer has been submitted successfully!",
-        data: result,
-      });
-    }
-  } catch (error) {
-    return res.status(400).send(error.message);
-  }
-};
+        if (result) {
+          return res.status(201).send({
+            message: "Survey answer has been submitted successfully!",
+            data: result,
+          });
+        }
+      } catch (error) {
+        return res.status(400).send(error.message);
+      }
+    },
+  };
+} else if (process.env.DB_MODE === "MONGO") {
+  module.exports = {
+    submitSurveyAnswer: async (req, res) => {
+      const { error, value } = surveyAnswerSchema.validate(req.body);
 
-module.exports = {
-  submitSurveyAnswer,
-};
+      if (error) return res.status(400).send(error.message);
+
+      try {
+        const result = await mongoService.submitSurvey(value);
+
+        if (result) {
+          return res.status(201).send({
+            message: "Survey answer has been created successfully!",
+            data: result,
+          });
+        }
+      } catch (error) {
+        return res.status(400).send(error.message);
+      }
+    },
+  };
+}

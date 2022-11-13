@@ -2,7 +2,6 @@ const dotenv = require("dotenv");
 dotenv.config();
 const app = require("./app");
 const dbConnection = require("./configs/dbConnection");
-console.log("🚀 ~ file: server.js ~ line 5 ~ dbConnection", dbConnection);
 
 dbConnection()
   .then(() => console.log("Connected to Database"))

@@ -1,6 +1,10 @@
 const { Schema, model } = require("mongoose");
 
 const surveyAnswerSchema = Schema({
+  userId: {
+    type: String,
+    required: true,
+  },
   questionId: {
     type: Schema.Types.ObjectId,
   },

@@ -83,11 +83,27 @@ describe("POST api/survey/survey-question", () => {
         response.body.should.be.a("object");
       });
   });
+
+  it("It should not create a survey : invalid payload", () => {
+    const payload = {
+      question: 99,
+      options: "opt1",
+    };
+    chai
+      .request(app)
+      .post("/api/survey/survey-question")
+      .send(payload)
+      .end((error, response) => {
+        // console.log("🚀 ~ file: surveyQuestion.test.js ~ line 21 ~ .end ~ response", response.body);
+        response.should.have.status(400);
+        response.body.should.be.a("object");
+      });
+  });
 });
 
 // GET testing getting survey api
 describe("GET api/survey/survey-questions", () => {
-  it("It should get all the survey questions", (done) => {
+  it("It should get all the survey questions", () => {
     chai
       .request(app)
       .get("/api/survey/survey-questions")
@@ -95,14 +111,13 @@ describe("GET api/survey/survey-questions", () => {
         response.should.have.status(200);
         response.body.should.be.a("array");
       });
-    done();
   });
 });
 
 // GET testing getting survey by id api
 describe("GET api/survey/survey-question/:id", () => {
-  it("It should get all the survey question/:id", (done) => {
-    const id = "636b858f385786b2ad31113";
+  it("It should get the survey by id", () => {
+    const id = "636b858f385786b2ad311135";
     chai
       .request(app)
       .get("/api/survey/survey-question/" + id)
@@ -110,6 +125,27 @@ describe("GET api/survey/survey-question/:id", () => {
         response.should.have.status(200);
         response.body.should.be.a("object");
       });
-    done();
+  });
+
+  it("It should not get the survey : invalid id", () => {
+    const id = "636b858f385786b2ad3111wer";
+    chai
+      .request(app)
+      .get("/api/survey/survey-question/" + id)
+      .end((error, response) => {
+        response.should.have.status(400);
+        response.body.should.be.a("object");
+      });
+  });
+
+  it("It should not get the survey : null id", () => {
+    const id = null;
+    chai
+      .request(app)
+      .get("/api/survey/survey-question/" + id)
+      .end((error, response) => {
+        response.should.have.status(400);
+        response.body.should.be.a("object");
+      });
   });
 });

@@ -4,7 +4,7 @@ const DB = require("../configs/db.config");
 const createSurveyQuestion = async (req, res) => {
   const { error, value } = surveyQuestionSchema.validate(req.body);
 
-  if (error) return res.status(400).json(error);
+  if (error) return res.status(422).json(error);
 
   try {
     const result = await DB.createSurvey(value);

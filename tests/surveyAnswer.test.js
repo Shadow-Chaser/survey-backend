@@ -1,56 +1,47 @@
 const chai = require("chai");
 const chaiHttp = require("chai-http");
 const server = require("../server");
-chai.should();
+const assert = chai.assert;
 chai.use(chaiHttp);
 
 // POST testing create survey answer api
 describe("POST api/survey/survey-answer", () => {
-  it("It should submit a survey", () => {
+  it("It should submit a survey", async () => {
     const payload = {
       userId: "f58f38hfh777",
       questionId: "636cc816610ce77e6d2e1cf1",
       question: "Test question 44?",
       answer: "opt2",
     };
-    chai
+    const response = await chai
       .request(server)
       .post("/api/survey/survey-answer")
-      .send(payload)
-      .end((error, response) => {
-        response.should.have.status(201);
-        response.body.should.be.a("object");
-        response.body.should.not.have.property("error");
-      });
+      .send(payload);
+    assert.equal(response.statusCode, 201);
+    assert.typeOf(response.body, "object");
   });
 
-  it("It should not submit a survey : null payload", () => {
+  it("It should not submit a survey : null payload", async () => {
     const payload = null;
-    chai
+    const response = await chai
       .request(server)
       .post("/api/survey/survey-answer")
-      .send(payload)
-      .end((error, response) => {
-        // console.log("🚀 ~ file: surveyQuestion.test.js ~ line 21 ~ .end ~ response", response.body);
-        response.should.have.status(400);
-        response.body.should.be.a("object");
-      });
+      .send(payload);
+    assert.equal(response.status, 422);
+    assert.typeOf(response.body, "object");
   });
 
-  it("It should not submit a survey : empty payload", () => {
+  it("It should not submit a survey : empty payload", async () => {
     const payload = {};
-    chai
+    const response = await chai
       .request(server)
       .post("/api/survey/survey-answer")
-      .send(payload)
-      .end((error, response) => {
-        // console.log("🚀 ~ file: surveyQuestion.test.js ~ line 21 ~ .end ~ response", response.body);
-        response.should.have.status(400);
-        response.body.should.be.a("object");
-      });
+      .send(payload);
+    assert.equal(response.status, 422);
+    assert.typeOf(response.body, "object");
   });
 
-  it("It should not submit a survey : payload overflow", () => {
+  it("It should not submit a survey : payload overflow", async () => {
     const payload = {
       userId: "f58f38hfh777",
       questionId: "636cc816610ce77e6d2e1cf1",
@@ -58,98 +49,81 @@ describe("POST api/survey/survey-answer", () => {
       answer: "opt2",
       test: "test",
     };
-    chai
+    const response = await chai
       .request(server)
       .post("/api/survey/survey-answer")
-      .send(payload)
-      .end((error, response) => {
-        // console.log("🚀 ~ file: surveyQuestion.test.js ~ line 21 ~ .end ~ response", response.body);
-        response.should.have.status(400);
-        response.body.should.be.a("object");
-      });
+      .send(payload);
+    assert.equal(response.status, 422);
+    assert.typeOf(response.body, "object");
   });
 
-  it("It should not submit a survey : payload underflow", () => {
+  it("It should not submit a survey : payload underflow", async () => {
     const payload = {
       userId: "f58f38hfh777",
       questionId: "636cc816610ce77e6d2e1cf1",
       question: "Test question 44?",
     };
-    chai
+    const response = await chai
       .request(server)
       .post("/api/survey/survey-answer")
-      .send(payload)
-      .end((error, response) => {
-        // console.log("🚀 ~ file: surveyQuestion.test.js ~ line 21 ~ .end ~ response", response.body);
-        response.should.have.status(400);
-        response.body.should.be.a("object");
-      });
+      .send(payload);
+    assert.equal(response.status, 422);
+    assert.typeOf(response.body, "object");
   });
 
-  it("It should not submit a survey : invalid payload", () => {
+  it("It should not submit a survey : invalid payload", async () => {
     const payload = {
       userId: 777,
       questionId: 36347,
       question: 53,
       answer: ["opt2"],
     };
-    chai
+    const response = await chai
       .request(server)
       .post("/api/survey/survey-answer")
-      .send(payload)
-      .end((error, response) => {
-        // console.log("🚀 ~ file: surveyQuestion.test.js ~ line 21 ~ .end ~ response", response.body);
-        response.should.have.status(400);
-        response.body.should.be.a("object");
-      });
+      .send(payload);
+    assert.equal(response.status, 422);
+    assert.typeOf(response.body, "object");
   });
 });
 
 // GET testing getting survey answer api
 describe("GET api/survey/survey-answers", () => {
-  it("It should get all the survey submission", () => {
-    chai
+  it("It should get all the survey submission", async () => {
+    const response = await chai
       .request(server)
-      .get("/api/survey/survey-answers")
-      .end((error, response) => {
-        response.should.have.status(200);
-        response.body.should.be.a("array");
-      });
+      .get("/api/survey/survey-answers");
+    assert.equal(response.status, 200);
+    assert.typeOf(response.body, "array");
   });
 });
 
 // GET testing getting all survey submission by user id api
 describe("GET api/survey/survey-answers/user/:userId", () => {
-  it("It should get the survey submission by id", () => {
+  it("It should get the survey submission by id", async () => {
     const userId = "f58f38hfh888";
-    chai
+    const response = await chai
       .request(server)
-      .get("/api/survey/survey-answers/user/" + userId)
-      .end((error, response) => {
-        response.should.have.status(200);
-        response.body.should.be.a("array");
-      });
+      .get("/api/survey/survey-answers/user/" + userId);
+    assert.equal(response.status, 200);
+    assert.typeOf(response.body, "array");
   });
 
-  it("It should not get the survey submissions : invalid id", () => {
+  it("It should not get the survey submissions : invalid id", async () => {
     const userId = "636b858f385786b2ad311sd1wer";
-    chai
+    const response = await chai
       .request(server)
-      .get("/api/survey/survey-answers/user/" + userId)
-      .end((error, response) => {
-        response.should.have.status(400);
-        response.body.should.be.a("object");
-      });
+      .get("/api/survey/survey-answers/user/" + userId);
+    assert.equal(response.status, 404);
+    assert.typeOf(response.body, "object");
   });
 
-  it("It should not get the survey submissions : null id", () => {
+  it("It should not get the survey submissions : null id", async () => {
     const userId = null;
-    chai
+    const response = await chai
       .request(server)
-      .get("/api/survey/survey-answers/user/" + userId)
-      .end((error, response) => {
-        response.should.have.status(400);
-        response.body.should.be.a("object");
-      });
+      .get("/api/survey/survey-answers/user/" + userId);
+    assert.equal(response.status, 404);
+    assert.typeOf(response.body, "object");
   });
 });

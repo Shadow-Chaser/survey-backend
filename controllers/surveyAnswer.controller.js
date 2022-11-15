@@ -4,7 +4,7 @@ const surveyAnswerSchema = require("../schemas/surveyAnswer.schema");
 const submitSurveyAnswer = async (req, res) => {
   const { error, value } = surveyAnswerSchema.validate(req.body);
 
-  if (error) return res.status(400).json(error);
+  if (error) return res.status(422).json(error);
 
   try {
     const result = await DB.submitSurvey(value);
@@ -28,11 +28,10 @@ const getAllSurveyAnswers = async (req, res) => {
 };
 
 const getAllSurveyAnswersByUser = async (req, res) => {
-  // if (!req.params.userId)
-  //   res.status(400).json({ message: "null value of userId is not accepted" });
-
   try {
     const result = await DB.getAnswersByUser(req.params.userId);
+    if (result.length === 0)
+      return res.status(404).json({ message: "Not Found" });
     return res.status(200).json(result);
   } catch (error) {
     return res.status(400).json(error);
@@ -42,6 +41,9 @@ const getAllSurveyAnswersByUser = async (req, res) => {
 const getAllSurveyAnswersByQuestion = async (req, res) => {
   try {
     const result = await DB.getAnswersBySurvey(req.params.id);
+    if (result.length === 0)
+      return res.status(404).json({ message: "Not Found" });
+
     return res.status(200).json(result);
   } catch (error) {
     return res.status(400).json(error);

@@ -7,8 +7,10 @@ dbConnection()
   .then(() => console.log("Connected to Database"))
   .catch((err) => console.log(err));
 
-app.listen(process.env.PORT, () => {
+const server = app.listen(process.env.PORT, () => {
   console.log(
     `Listening on port ${process.env.PORT}... and DB Mode : ${process.env.DB_MODE}`
   );
 });
+
+module.exports = server;

@@ -1,8 +1,8 @@
 const chai = require("chai");
 const chaiHttp = require("chai-http");
-const app = require("../app");
-chai.use(chaiHttp);
+const server = require("../server");
 chai.should();
+chai.use(chaiHttp);
 
 // POST testing create survey answer api
 describe("POST api/survey/survey-answer", () => {
@@ -14,7 +14,7 @@ describe("POST api/survey/survey-answer", () => {
       answer: "opt2",
     };
     chai
-      .request(app)
+      .request(server)
       .post("/api/survey/survey-answer")
       .send(payload)
       .end((error, response) => {
@@ -27,7 +27,7 @@ describe("POST api/survey/survey-answer", () => {
   it("It should not submit a survey : null payload", () => {
     const payload = null;
     chai
-      .request(app)
+      .request(server)
       .post("/api/survey/survey-answer")
       .send(payload)
       .end((error, response) => {
@@ -40,7 +40,7 @@ describe("POST api/survey/survey-answer", () => {
   it("It should not submit a survey : empty payload", () => {
     const payload = {};
     chai
-      .request(app)
+      .request(server)
       .post("/api/survey/survey-answer")
       .send(payload)
       .end((error, response) => {
@@ -59,7 +59,7 @@ describe("POST api/survey/survey-answer", () => {
       test: "test",
     };
     chai
-      .request(app)
+      .request(server)
       .post("/api/survey/survey-answer")
       .send(payload)
       .end((error, response) => {
@@ -76,7 +76,7 @@ describe("POST api/survey/survey-answer", () => {
       question: "Test question 44?",
     };
     chai
-      .request(app)
+      .request(server)
       .post("/api/survey/survey-answer")
       .send(payload)
       .end((error, response) => {
@@ -94,7 +94,7 @@ describe("POST api/survey/survey-answer", () => {
       answer: ["opt2"],
     };
     chai
-      .request(app)
+      .request(server)
       .post("/api/survey/survey-answer")
       .send(payload)
       .end((error, response) => {
@@ -109,7 +109,7 @@ describe("POST api/survey/survey-answer", () => {
 describe("GET api/survey/survey-answers", () => {
   it("It should get all the survey submission", () => {
     chai
-      .request(app)
+      .request(server)
       .get("/api/survey/survey-answers")
       .end((error, response) => {
         response.should.have.status(200);
@@ -123,7 +123,7 @@ describe("GET api/survey/survey-answers/user/:userId", () => {
   it("It should get the survey submission by id", () => {
     const userId = "f58f38hfh888";
     chai
-      .request(app)
+      .request(server)
       .get("/api/survey/survey-answers/user/" + userId)
       .end((error, response) => {
         response.should.have.status(200);
@@ -134,7 +134,7 @@ describe("GET api/survey/survey-answers/user/:userId", () => {
   it("It should not get the survey submissions : invalid id", () => {
     const userId = "636b858f385786b2ad311sd1wer";
     chai
-      .request(app)
+      .request(server)
       .get("/api/survey/survey-answers/user/" + userId)
       .end((error, response) => {
         response.should.have.status(400);
@@ -145,7 +145,7 @@ describe("GET api/survey/survey-answers/user/:userId", () => {
   it("It should not get the survey submissions : null id", () => {
     const userId = null;
     chai
-      .request(app)
+      .request(server)
       .get("/api/survey/survey-answers/user/" + userId)
       .end((error, response) => {
         response.should.have.status(400);

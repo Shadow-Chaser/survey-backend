@@ -28,6 +28,9 @@ const getAllSurveyAnswers = async (req, res) => {
 };
 
 const getAllSurveyAnswersByUser = async (req, res) => {
+  // if (!req.params.userId)
+  //   res.status(400).json({ message: "null value of userId is not accepted" });
+
   try {
     const result = await DB.getAnswersByUser(req.params.userId);
     return res.status(200).json(result);

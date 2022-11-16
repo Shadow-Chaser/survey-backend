@@ -1,90 +1,45 @@
-const generateUniqueId = require("../utils/generateUniqueID");
-const { writeDB, readDB } = require("./db.controller");
+process.env.NODE_ENV = "test";
+
 const surveyQuestionSchema = require("../schemas/surveyQuestion.schema");
+const DB = require("../configs/db.config");
 
 const createSurveyQuestion = async (req, res) => {
   const { error, value } = surveyQuestionSchema.validate(req.body);
 
-  if (error) return res.status(400).send(error.message);
+  if (error) return res.status(422).json(error);
 
   try {
-    const id = await generateUniqueId();
-    const data = await readDB("surveyQuestions.json");
-    const question = { ...value, id };
-    const newData = [...data, question];
+    const result = await DB.createSurvey(value);
 
-    const result = await writeDB(newData, "surveyQuestions.json");
-    if (result) {
-      return res.status(201).send({
-        message: "Survey question has been created successfully!",
-        data: question,
-      });
-    }
+    return res.status(201).json({
+      message: "Survey question has been created successfully!",
+      data: result,
+    });
   } catch (error) {
-    return res.status(400).send("An error occurred!");
+    return res.status(400).json(error);
   }
 };
 
-const createMultipleSurveyQuestion = async (req, res) => {
-  let surveyQuestions = req.body;
-
-  if (!Array.isArray(surveyQuestions))
-    return res.status(400).send("Request body must be an array!");
-
-  for (let i = 0; i < surveyQuestions.length; i++) {
-    const uniqueId = await generateUniqueId();
-    const { error } = surveyQuestionSchema.validate(surveyQuestions[i]);
-    if (error) return res.status(400).send(error.message);
-    surveyQuestions[i]["id"] = uniqueId;
-  }
-
+const getAllSurveyQuestions = async (req, res) => {
   try {
-    const data = await readDB("surveyQuestions.json");
-    const result = await writeDB(
-      [...data, ...surveyQuestions],
-      "surveyQuestions.json"
-    );
-
-    if (result) {
-      return res.status(201).send({
-        message: "Survey questions has been created successfully!",
-        data: surveyQuestions,
-      });
-    }
+    const result = await DB.getAllSurvey();
+    return res.status(200).json(result);
   } catch (error) {
-    return res.status(400).send("An error occurred!");
-  }
-};
-
-const getAllSurveyQuestion = async (req, res) => {
-  try {
-    const result = await readDB("surveyQuestions.json");
-    if (result) {
-      return res.status(200).send(result);
-    }
-  } catch (error) {
-    return res.status(400).send("An error occurred!");
+    return res.status(400).json(error);
   }
 };
 
 const getSurveyQuestionById = async (req, res) => {
-  const id = req.params.id;
   try {
-    const result = await readDB("surveyQuestions.json");
-    const surveyQuestion = result.find((e) => e.id === id);
-    if (surveyQuestion) {
-      return res.status(200).send(surveyQuestion);
-    } else {
-      return res.status(404).send("Survey question not found");
-    }
+    const survey = await DB.getSurveyById(req.params.id);
+    return res.status(200).json(survey);
   } catch (error) {
-    return res.status(400).send("An error occurred!");
+    return res.status(400).json(error);
   }
 };
 
 module.exports = {
   createSurveyQuestion,
-  getAllSurveyQuestion,
+  getAllSurveyQuestions,
   getSurveyQuestionById,
-  createMultipleSurveyQuestion,
 };

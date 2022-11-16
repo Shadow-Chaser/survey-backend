@@ -1,100 +1,60 @@
+process.env.NODE_ENV = "test";
+
+const DB = require("../configs/db.config");
 const surveyAnswerSchema = require("../schemas/surveyAnswer.schema");
-const generateUniqueId = require("../utils/generateUniqueID");
-const { writeDB, readDB } = require("./db.controller");
 
 const submitSurveyAnswer = async (req, res) => {
   const { error, value } = surveyAnswerSchema.validate(req.body);
 
-  if (error) return res.status(400).send(error.message);
+  if (error) return res.status(422).json(error);
 
   try {
-    const id = await generateUniqueId();
-    const data = await readDB("surveyAnswers.json");
-    const answer = { ...value, id };
-    const newData = [...data, answer];
+    const result = await DB.submitSurvey(value);
 
-    const result = await writeDB(newData, "surveyAnswers.json");
-    if (result) {
-      return res.status(201).send({
-        message: "Survey answer has been submitted successfully!",
-        data: answer,
-      });
-    }
+    return res.status(201).json({
+      message: "Survey answer has been submitted successfully!",
+      data: result,
+    });
   } catch (error) {
-    return res.status(400).send("An error occurred!");
-  }
-};
-
-const submitMultipleSurveyAnswer = async (req, res) => {
-  let surveyAnswers = req.body;
-
-  if (!Array.isArray(surveyAnswers))
-    return res.status(400).send("Request body must be an array!");
-
-  for (let i = 0; i < surveyAnswers.length; i++) {
-    const uniqueId = await generateUniqueId();
-    const { error } = surveyAnswerSchema.validate(surveyAnswers[i]);
-    if (error) return res.status(400).send(error.message);
-    surveyAnswers[i]["id"] = uniqueId;
-  }
-
-  try {
-    const data = await readDB("surveyAnswers.json");
-    const result = await writeDB(
-      [...data, ...surveyAnswers],
-      "surveyAnswers.json"
-    );
-
-    if (result) {
-      return res.status(201).send({
-        message: "Survey answers has been submitted successfully!",
-        data: surveyAnswers,
-      });
-    }
-  } catch (error) {
-    return res.status(400).send("An error occurred!");
+    return res.status(400).json(error);
   }
 };
 
 const getAllSurveyAnswers = async (req, res) => {
   try {
-    const result = await readDB("surveyAnswers.json");
-    if (result) {
-      return res.status(200).send(result);
-    }
+    const result = await DB.getAllAnswer();
+    return res.status(200).json(result);
   } catch (error) {
-    return res.status(400).send("An error occurred!");
+    return res.status(400).json(error);
   }
 };
 
-const getSurveyAnswersByUser = async (req, res) => {
-  const userId = req.params.id;
-
+const getAllSurveyAnswersByUser = async (req, res) => {
   try {
-    const data = await readDB("surveyAnswers.json");
-    const dataByUser = data.filter((d) => d.userId === userId);
-    return res.status(200).send(dataByUser);
+    const result = await DB.getAnswersByUser(req.params.userId);
+    if (result.length === 0)
+      return res.status(404).json({ message: "Not Found" });
+    return res.status(200).json(result);
   } catch (error) {
-    return res.status(400).send("An error occurred!");
+    return res.status(400).json(error);
   }
 };
 
-const getSurveyAnswersByQuestion = async (req, res) => {
-  const questionId = req.params.id;
-
+const getAllSurveyAnswersByQuestion = async (req, res) => {
   try {
-    const data = await readDB("surveyAnswers.json");
-    const dataByQuestion = data.filter((d) => d.questionId === questionId);
-    return res.status(200).send(dataByQuestion);
+    const result = await DB.getAnswersBySurvey(req.params.id);
+    if (result.length === 0)
+      return res.status(404).json({ message: "Not Found" });
+
+    return res.status(200).json(result);
   } catch (error) {
-    return res.status(400).send("An error occurred!");
+    return res.status(400).json(error);
   }
 };
 
 module.exports = {
   submitSurveyAnswer,
-  getSurveyAnswersByUser,
-  getSurveyAnswersByQuestion,
   getAllSurveyAnswers,
-  submitMultipleSurveyAnswer,
+  getAllSurveyAnswersByUser,
+  getAllSurveyAnswersByQuestion,
 };

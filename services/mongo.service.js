@@ -1,38 +1,37 @@
 const SurveyQuestion = require("../models/surveyQuestion.model");
 const SurveyAnswer = require("../models/surveyAnswer.model");
+const User = require("../models/user.model");
 
-const createSurvey = async (data) => {
+exports.createSurvey = async (data) => {
   return SurveyQuestion.create(data);
 };
 
-const submitSurvey = async (data) => {
+exports.createUser = async (data) => {
+  return User.create(data);
+};
+
+exports.getUserByEmail = async (email) => {
+  return User.findOne({ email: email });
+};
+
+exports.submitSurvey = async (data) => {
   return SurveyAnswer.create(data);
 };
-const getAllSurvey = async () => {
+exports.getAllSurvey = async () => {
   return SurveyQuestion.find({});
 };
-const getAllAnswer = async () => {
+exports.getAllAnswer = async () => {
   return SurveyAnswer.find({});
 };
 
-const getSurveyById = async (id) => {
+exports.getSurveyById = async (id) => {
   return SurveyQuestion.findById(id);
 };
 
-const getAnswersByUser = async (userId) => {
+exports.getAnswersByUser = async (userId) => {
   return SurveyAnswer.find({ userId: userId });
 };
 
-const getAnswersBySurvey = async (surveyId) => {
+exports.getAnswersBySurvey = async (surveyId) => {
   return SurveyAnswer.find({ questionId: surveyId });
-};
-
-module.exports = {
-  createSurvey,
-  submitSurvey,
-  getAllSurvey,
-  getAllAnswer,
-  getSurveyById,
-  getAnswersByUser,
-  getAnswersBySurvey,
 };

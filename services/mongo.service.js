@@ -6,13 +6,13 @@ exports.createSurvey = async (data) => {
   return SurveyQuestion.create(data);
 };
 
-exports.createUser = async (data) => {
-  return User.create(data);
-};
+// exports.createUser = async (data) => {
+//   return User.create(data);
+// };
 
-exports.getUserByEmail = async (email) => {
-  return User.findOne({ email: email });
-};
+// exports.getUserByEmail = async (email) => {
+//   return User.findOne({ email: email });
+// };
 
 exports.submitSurvey = async (data) => {
   return SurveyAnswer.create(data);

@@ -1,3 +1,5 @@
+process.env.NODE_ENV = "test";
+
 const DB = require("../configs/db.config");
 const surveyAnswerSchema = require("../schemas/surveyAnswer.schema");
 

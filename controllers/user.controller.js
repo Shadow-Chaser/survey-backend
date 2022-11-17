@@ -23,11 +23,9 @@ exports.signUp = async (req, res) => {
     const result = await DB.createUser(user);
 
     res.status(201).send({
-      data: {
-        name: result.name,
-        email: result.email,
-        message: "You have been registered successfully!",
-      },
+      name: result.name,
+      email: result.email,
+      message: "You have been registered successfully!",
     });
   } catch (err) {
     return res.status(400).send(err.message);
@@ -50,6 +48,6 @@ exports.signIn = async (req, res) => {
     const access_token = await DB.generateJWTToken(user._id, user.email);
     res.status(200).send({ access_token });
   } catch {
-    res.send("Invalid email or password!");
+    return res.status(400).send(err.message);
   }
 };

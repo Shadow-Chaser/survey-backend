@@ -11,14 +11,18 @@ const {
   getAllSurveyAnswersByQuestion,
 } = require("../controllers/surveyAnswer.controller");
 
-const router = require("express").Router();
+const surveyRouter = require("express").Router();
 
-router.route("/survey-question").post(createSurveyQuestion);
-router.route("/survey-answer").post(submitSurveyAnswer);
-router.route("/survey-questions").get(getAllSurveyQuestions);
-router.route("/survey-question/:id").get(getSurveyQuestionById);
-router.route("/survey-answers/user/:userId").get(getAllSurveyAnswersByUser);
-router.route("/survey-answers/question/:id").get(getAllSurveyAnswersByQuestion);
-router.route("/survey-answers").get(getAllSurveyAnswers);
+surveyRouter.route("/survey-question").post(createSurveyQuestion);
+surveyRouter.route("/survey-answer").post(submitSurveyAnswer);
+surveyRouter.route("/survey-questions").get(getAllSurveyQuestions);
+surveyRouter.route("/survey-question/:id").get(getSurveyQuestionById);
+surveyRouter
+  .route("/survey-answers/user/:userId")
+  .get(getAllSurveyAnswersByUser);
+surveyRouter
+  .route("/survey-answers/question/:id")
+  .get(getAllSurveyAnswersByQuestion);
+surveyRouter.route("/survey-answers").get(getAllSurveyAnswers);
 
-module.exports = router;
+module.exports = surveyRouter;

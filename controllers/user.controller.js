@@ -33,3 +33,23 @@ exports.signUp = async (req, res) => {
     return res.status(400).send(err.message);
   }
 };
+
+/*
+@desc   Authenticate existing user
+@route  POST /api/user/signin
+@access Public
+*/
+exports.signIn = async (req, res) => {
+  try {
+    let user = await DB.getUserByEmail(req.body.email);
+    if (!user) return res.status(400).send("Invalid email or password!");
+
+    const validUser = await bcrypt.compare(req.body.password, user.password);
+    if (!validUser) return res.status(400).send("Invalid email or password!");
+
+    const access_token = await DB.generateJWTToken(user._id, user.email);
+    res.status(200).send({ access_token });
+  } catch {
+    res.send("Invalid email or password!");
+  }
+};

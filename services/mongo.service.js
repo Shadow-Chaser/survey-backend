@@ -1,6 +1,7 @@
 const SurveyQuestion = require("../models/surveyQuestion.model");
 const SurveyAnswer = require("../models/surveyAnswer.model");
 const User = require("../models/user.model");
+const jwt = require("jsonwebtoken");
 
 exports.createSurvey = async (data) => {
   return SurveyQuestion.create(data);
@@ -12,6 +13,18 @@ exports.createUser = async (data) => {
 
 exports.getUserByEmail = async (email) => {
   return User.findOne({ email: email });
+};
+
+exports.generateJWTToken = async (id, email) => {
+  const token = jwt.sign(
+    { _id: id, email: email },
+    process.env.JWT_SECRET_KEY,
+    {
+      expiresIn: "1day",
+    }
+  );
+
+  return token;
 };
 
 exports.submitSurvey = async (data) => {

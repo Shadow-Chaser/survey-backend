@@ -1,10 +1,10 @@
-const SurveyQuestion = require("../models/surveyQuestion.model");
 const SurveyAnswer = require("../models/surveyAnswer.model");
 const User = require("../models/user.model");
 const jwt = require("jsonwebtoken");
+const Survey = require("../models/survey.model");
 
 exports.createSurvey = async (data) => {
-  return SurveyQuestion.create(data);
+  return Survey.create(data);
 };
 
 exports.createUser = async (data) => {
@@ -31,14 +31,14 @@ exports.submitSurvey = async (data) => {
   return SurveyAnswer.create(data);
 };
 exports.getAllSurvey = async () => {
-  return SurveyQuestion.find({});
+  return Survey.find({});
 };
 exports.getAllAnswer = async () => {
   return SurveyAnswer.find({});
 };
 
 exports.getSurveyById = async (id) => {
-  return SurveyQuestion.findById(id);
+  return Survey.findById(id);
 };
 
 exports.getAnswersByUser = async (userId) => {

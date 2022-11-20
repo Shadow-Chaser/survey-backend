@@ -1,28 +1,14 @@
 const {
-  createSurveyQuestion,
-  getAllSurveyQuestions,
-  getSurveyQuestionById,
-} = require("../controllers/surveyQuestion.controller");
-
-const {
-  submitSurveyAnswer,
-  getAllSurveyAnswers,
-  getAllSurveyAnswersByUser,
-  getAllSurveyAnswersByQuestion,
-} = require("../controllers/surveyAnswer.controller");
+  createSurvey,
+  getAllSurvey,
+  getSurveyById,
+} = require("../controllers/survey.controller");
+const authorizeMiddleware = require("../middlewares/authorize.middleware");
 
 const surveyRouter = require("express").Router();
 
-surveyRouter.route("/survey-question").post(createSurveyQuestion);
-surveyRouter.route("/survey-answer").post(submitSurveyAnswer);
-surveyRouter.route("/survey-questions").get(getAllSurveyQuestions);
-surveyRouter.route("/survey-question/:id").get(getSurveyQuestionById);
-surveyRouter
-  .route("/survey-answers/user/:userId")
-  .get(getAllSurveyAnswersByUser);
-surveyRouter
-  .route("/survey-answers/question/:id")
-  .get(getAllSurveyAnswersByQuestion);
-surveyRouter.route("/survey-answers").get(getAllSurveyAnswers);
+surveyRouter.route("/").post(authorizeMiddleware, createSurvey);
+surveyRouter.route("/").get(authorizeMiddleware, getAllSurvey);
+surveyRouter.route("/:surveyId").get(authorizeMiddleware, getSurveyById);
 
 module.exports = surveyRouter;

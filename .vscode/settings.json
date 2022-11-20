@@ -11,7 +11,7 @@
     "source.organizeImports": true
   },
   "eslint.alwaysShowStatus": true,
-  "cSpell.words": ["choosen", "Hussan", "signin"],
+  "cSpell.words": ["choosen", "Hussan", "middlewares", "signin"],
   "better-comments.multilineComments": true,
   "better-comments.highlightPlainText": false,
 

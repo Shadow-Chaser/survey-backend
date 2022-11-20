@@ -20,12 +20,11 @@ exports.signUp = async (req, res) => {
   user.password = await bcrypt.hash(user.password, 10);
 
   try {
-    const result = await DB.createUser(user);
+    const { _id, name, email } = await DB.createUser(user);
 
     res.status(201).send({
-      name: result.name,
-      email: result.email,
       message: "You have been registered successfully!",
+      data: { _id, name, email },
     });
   } catch (err) {
     return res.status(400).send(err.message);
@@ -46,7 +45,10 @@ exports.signIn = async (req, res) => {
     if (!validUser) return res.status(400).send("Invalid email or password!");
 
     const access_token = await DB.generateJWTToken(user._id, user.email);
-    res.status(200).send({ access_token });
+    res.status(200).send({
+      message: "You have been authenticated!",
+      data: { access_token },
+    });
   } catch {
     return res.status(400).send(err.message);
   }

@@ -1,8 +1,8 @@
-const surveyQuestionSchema = require("../schemas/surveyQuestion.schema");
 const DB = require("../configs/db.config");
+const { surveyValidator } = require("../validators/survey.validator");
 
-const createSurveyQuestion = async (req, res) => {
-  const { error, value } = surveyQuestionSchema.validate(req.body);
+exports.createSurvey = async (req, res) => {
+  const { error, value } = await surveyValidator(req.body);
 
   if (error) return res.status(422).json(error);
 
@@ -18,7 +18,7 @@ const createSurveyQuestion = async (req, res) => {
   }
 };
 
-const getAllSurveyQuestions = async (req, res) => {
+exports.getAllSurvey = async (req, res) => {
   try {
     const result = await DB.getAllSurvey();
     return res.status(200).json(result);
@@ -27,17 +27,11 @@ const getAllSurveyQuestions = async (req, res) => {
   }
 };
 
-const getSurveyQuestionById = async (req, res) => {
+exports.getSurveyById = async (req, res) => {
   try {
-    const survey = await DB.getSurveyById(req.params.id);
+    const survey = await DB.getSurveyById(req.params.surveyId);
     return res.status(200).json(survey);
   } catch (error) {
     return res.status(400).json(error);
   }
-};
-
-module.exports = {
-  createSurveyQuestion,
-  getAllSurveyQuestions,
-  getSurveyQuestionById,
 };

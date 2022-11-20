@@ -7,6 +7,14 @@ exports.createSurvey = async (data) => {
   return Survey.create(data);
 };
 
+exports.updateSurveyById = async (id, update) => {
+  return Survey.findByIdAndUpdate(id, update);
+};
+
+exports.deleteSurveyById = async (id) => {
+  return Survey.findByIdAndDelete(id);
+};
+
 exports.createUser = async (data) => {
   return User.create(data);
 };

@@ -1,0 +1,432 @@
+{
+	"info": {
+		"_postman_id": "f5c04ec4-280e-4a7c-b933-9cf0afc21372",
+		"name": "Suvey REST API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "15082744"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "User  SignUp",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"Test\",\r\n    \"email\":\"test@test.com\",\r\n    \"password\":\"test@123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/user/signup",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User  SignIn",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"test@test.com\",\r\n    \"password\":\"test@123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/user/signin",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"signin"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Survey",
+			"item": [
+				{
+					"name": "Create New Survey",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzdhMDlhNzk2ZDdjMDU4NmU4ZDY3M2YiLCJlbWFpbCI6InRlc3RAdGVzdC5jb20iLCJpYXQiOjE2Njg5NDIyODYsImV4cCI6MTY2OTAyODY4Nn0.7-0nFXqmIC0nnqe5-jdTq1b8swlnxbOnDd-hNj6avP4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"A new survey\",\r\n    \"survey\": [\r\n        {\r\n            \"question\": \"What is you favorite food?\",\r\n            \"options\": [\r\n                \"burger\",\r\n                \"sandwitch\"\r\n            ]\r\n        },\r\n        {\r\n            \"question\": \"What is you favorite drink?\",\r\n            \"options\": [\r\n                \"pepsi\",\r\n                \"coca-cola\"\r\n            ]\r\n        }\r\n    ],\r\n    \"user\": \"637a09a796d7c0586e8d673f\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/surveys",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"surveys"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Submit Answer by surveyId",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzdhMDlhNzk2ZDdjMDU4NmU4ZDY3M2YiLCJlbWFpbCI6InRlc3RAdGVzdC5jb20iLCJpYXQiOjE2Njg5NDIyODYsImV4cCI6MTY2OTAyODY4Nn0.7-0nFXqmIC0nnqe5-jdTq1b8swlnxbOnDd-hNj6avP4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"surveyId\": \"637a0b7c96d7c0586e8d6745\",\r\n    \"answers\": [\r\n        {\r\n            \"questionId\": \"637a0b7c96d7c0586e8d6746\",\r\n            \"choosenOption\": \"sandwitch\"\r\n        },\r\n        {\r\n            \"questionId\": \"637a0b7c96d7c0586e8d6747\",\r\n            \"choosenOption\": \"coca-cola\"\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/surveys/637a0b7c96d7c0586e8d6745/answers",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"surveys",
+								"637a0b7c96d7c0586e8d6745",
+								"answers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Answers by surveyId",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzdhMDlhNzk2ZDdjMDU4NmU4ZDY3M2YiLCJlbWFpbCI6InRlc3RAdGVzdC5jb20iLCJpYXQiOjE2Njg5NDIyODYsImV4cCI6MTY2OTAyODY4Nn0.7-0nFXqmIC0nnqe5-jdTq1b8swlnxbOnDd-hNj6avP4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/surveys/637a0b7c96d7c0586e8d6745/answers",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"surveys",
+								"637a0b7c96d7c0586e8d6745",
+								"answers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Answer by Answer Id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzdhMDlhNzk2ZDdjMDU4NmU4ZDY3M2YiLCJlbWFpbCI6InRlc3RAdGVzdC5jb20iLCJpYXQiOjE2Njg5NDIyODYsImV4cCI6MTY2OTAyODY4Nn0.7-0nFXqmIC0nnqe5-jdTq1b8swlnxbOnDd-hNj6avP4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/surveys/637a0b7c96d7c0586e8d6745/answers/637b0d122be8fea3e6522cdd",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"surveys",
+								"637a0b7c96d7c0586e8d6745",
+								"answers",
+								"637b0d122be8fea3e6522cdd"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Existing Survey by Id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzdhMDlhNzk2ZDdjMDU4NmU4ZDY3M2YiLCJlbWFpbCI6InRlc3RAdGVzdC5jb20iLCJpYXQiOjE2Njg5NDIyODYsImV4cCI6MTY2OTAyODY4Nn0.7-0nFXqmIC0nnqe5-jdTq1b8swlnxbOnDd-hNj6avP4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Survey 101\",\r\n    \"survey\": [\r\n        {\r\n            \"question\": \"What is you favorite food?\",\r\n            \"options\": [\r\n                \"burger\",\r\n                \"sandwitch\"\r\n            ]\r\n        },\r\n        {\r\n            \"question\": \"What is you favorite drink?\",\r\n            \"options\": [\r\n                \"pepsi\",\r\n                \"coca-cola\"\r\n            ]\r\n        }\r\n    ],\r\n    \"user\": \"637a09a796d7c0586e8d673f\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/surveys/637a0b1296d7c0586e8d6742",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"surveys",
+								"637a0b1296d7c0586e8d6742"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Existing Survey by Id Copy",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzdhMDlhNzk2ZDdjMDU4NmU4ZDY3M2YiLCJlbWFpbCI6InRlc3RAdGVzdC5jb20iLCJpYXQiOjE2Njg5NDIyODYsImV4cCI6MTY2OTAyODY4Nn0.7-0nFXqmIC0nnqe5-jdTq1b8swlnxbOnDd-hNj6avP4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/surveys/637a0b1296d7c0586e8d6742",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"surveys",
+								"637a0b1296d7c0586e8d6742"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Surveys",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzdhMDlhNzk2ZDdjMDU4NmU4ZDY3M2YiLCJlbWFpbCI6InRlc3RAdGVzdC5jb20iLCJpYXQiOjE2Njg5NDIyODYsImV4cCI6MTY2OTAyODY4Nn0.7-0nFXqmIC0nnqe5-jdTq1b8swlnxbOnDd-hNj6avP4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/surveys/637a0b1296d7c0586e8d6742",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"surveys",
+								"637a0b1296d7c0586e8d6742"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get  Survey by Id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzdhMDlhNzk2ZDdjMDU4NmU4ZDY3M2YiLCJlbWFpbCI6InRlc3RAdGVzdC5jb20iLCJpYXQiOjE2Njg5NDIyODYsImV4cCI6MTY2OTAyODY4Nn0.7-0nFXqmIC0nnqe5-jdTq1b8swlnxbOnDd-hNj6avP4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/surveys/637a0b7c96d7c0586e8d6745",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"surveys",
+								"637a0b7c96d7c0586e8d6745"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "BASE_URL",
+			"value": "http://localhost:8080",
+			"type": "string"
+		}
+	]
+}

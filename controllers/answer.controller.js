@@ -1,5 +1,4 @@
 const DB = require("../configs/db.config");
-const surveyAnswerSchema = require("../schemas/surveyAnswer.schema");
 const { answerValidator } = require("../validators/answer.validator");
 
 exports.submitAnswerBySurveyId = async (req, res) => {

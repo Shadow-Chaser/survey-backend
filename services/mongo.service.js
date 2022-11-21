@@ -1,10 +1,18 @@
-const SurveyAnswer = require("../models/surveyAnswer.model");
 const User = require("../models/user.model");
 const jwt = require("jsonwebtoken");
 const Survey = require("../models/survey.model");
+const Answer = require("../models/answer.model");
 
 exports.createSurvey = async (data) => {
   return Survey.create(data);
+};
+
+exports.getAllSurvey = async () => {
+  return Survey.find({});
+};
+
+exports.getSurveyById = async (id) => {
+  return Survey.findById(id);
 };
 
 exports.updateSurveyById = async (id, update) => {
@@ -35,24 +43,14 @@ exports.generateJWTToken = async (id, email) => {
   return token;
 };
 
-exports.submitSurvey = async (data) => {
-  return SurveyAnswer.create(data);
-};
-exports.getAllSurvey = async () => {
-  return Survey.find({});
-};
-exports.getAllAnswer = async () => {
-  return SurveyAnswer.find({});
+exports.submitAnswerBySurveyId = async (data) => {
+  return Answer.create(data);
 };
 
-exports.getSurveyById = async (id) => {
-  return Survey.findById(id);
+exports.getAllAnswerBySurveyId = async (surveyId) => {
+  return Answer.find({ surveyId: surveyId });
 };
 
-exports.getAnswersByUser = async (userId) => {
-  return SurveyAnswer.find({ userId: userId });
-};
-
-exports.getAnswersBySurvey = async (surveyId) => {
-  return SurveyAnswer.find({ questionId: surveyId });
+exports.getAnswerByAnswerId = async (answerId) => {
+  return Answer.findById(answerId);
 };

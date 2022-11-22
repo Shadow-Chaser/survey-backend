@@ -18,10 +18,10 @@ const surveyRouter = require("express").Router();
 surveyRouter
   .route("/")
   .post(authorizeMiddleware, createSurvey)
-  .get(authorizeMiddleware, getAllSurvey);
+  .get(getAllSurvey);
 surveyRouter
   .route("/:surveyId")
-  .get(authorizeMiddleware, getSurveyById)
+  .get(getSurveyById)
   .put(authorizeMiddleware, updateSurveyById)
   .delete(authorizeMiddleware, deleteSurveyById);
 surveyRouter

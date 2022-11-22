@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
-const MONGO_CONNECTION_STRING = process.env.MONGO_CONNECTION_STRING;
-const NODE_ENV = process.env.NODE_ENV;
+const { MONGO_CONNECTION_STRING, NODE_ENV } = require("./env.config");
 
 const mongoConnection = () => {
   return mongoose.connect(`${MONGO_CONNECTION_STRING}-${NODE_ENV}`, {

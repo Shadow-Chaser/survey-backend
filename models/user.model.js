@@ -25,4 +25,10 @@ const userSchema = Schema(
   }
 );
 
+userSchema.virtual("id").get(() => {
+  return this._id;
+});
+
+userSchema.set("toJSON", { virtuals: true });
+
 module.exports = model("User", userSchema);

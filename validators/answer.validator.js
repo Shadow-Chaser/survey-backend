@@ -1,11 +1,11 @@
 const Joi = require("joi");
 
 const answerSchema = Joi.object().keys({
-  surveyId: Joi.string().required(),
+  surveyId: Joi.string().trim().required(),
   answers: Joi.array()
     .items({
-      choosenOption: Joi.string().required(),
-      questionId: Joi.string().required(),
+      choosenOption: Joi.string().trim().required(),
+      questionId: Joi.string().trim().required(),
     })
     .required(),
 });

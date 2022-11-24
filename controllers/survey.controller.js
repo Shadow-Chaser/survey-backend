@@ -22,7 +22,11 @@ module.exports = {
   getAllSurvey: async (req, res) => {
     try {
       const result = await DB.getAllSurvey();
-      return res.status(200).json(result);
+      if (result.length > 0) {
+        return res.status(200).json(result);
+      } else {
+        throw new Error("Database Empty: There was no data in the collection.");
+      }
     } catch (error) {
       return res.status(400).json(error);
     }
@@ -55,7 +59,7 @@ module.exports = {
       const result = await DB.deleteSurveyById(req.params.surveyId);
       return res.status(200).json({
         message: "Survey deleted successfully",
-        data: { result },
+        data: result,
       });
     } catch (error) {
       return res.status(400).json(error);

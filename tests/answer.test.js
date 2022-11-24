@@ -1,144 +1,84 @@
 const chai = require("chai");
 const chaiHttp = require("chai-http");
-const DB = require("../configs/db.config");
-const SurveyAnswer = require("../models/surveyAnswer.model");
-const SurveyQuestion = require("../models/surveyQuestion.model");
 const server = require("../server");
+const Survey = require("../models/survey.model");
+const Answer = require("../models/answer.model");
 const {
-  answerData,
-  invalidAnswerData,
+  survey,
+  JWTToken,
+  answer,
+  invalidAnswer,
   randomId,
 } = require("./utils/test.utils");
+const { assert } = require("chai");
+const DB = require("../configs/db.config");
 
-const assert = chai.assert;
 chai.use(chaiHttp);
 
-describe("Survey Answer API", () => {
+describe("Survey API Test Suit", () => {
   beforeEach(async () => {
-    await SurveyQuestion.deleteMany();
-    await SurveyAnswer.deleteMany();
+    await Survey.deleteMany();
+    await Answer.deleteMany();
   });
 
   afterEach(async () => {
-    await SurveyQuestion.deleteMany();
-    await SurveyAnswer.deleteMany();
+    await Survey.deleteMany();
+    await Answer.deleteMany();
   });
 
-  // POST testing create survey answer api
-  describe("POST api/survey/survey-answer", () => {
+  // POST submit survey
+  describe("POST /api/v1/surveys/:surveyId/answers", () => {
     it("It should submit a survey", async () => {
-      const payload = await answerData();
-      const response = await chai
+      const { _id } = await DB.createSurvey(survey);
+      const payload = { ...answer, surveyId: _id };
+      const res = await chai
         .request(server)
-        .post("/api/survey/survey-answer")
+        .post(`/api/v1/surveys/${_id}/answers`)
         .send(payload);
-      assert.equal(response.statusCode, 201);
-      assert.typeOf(response.body, "object");
-      assert.equal(response.body.data.answer, payload.answer);
-      assert.equal(response.body.data.question, payload.question);
-    });
 
-    it("It should not submit a survey : null payload", async () => {
-      const payload = null;
-      const response = await chai
-        .request(server)
-        .post("/api/survey/survey-answer")
-        .send(payload);
-      assert.equal(response.status, 422);
-      assert.typeOf(response.body, "object");
+      assert.equal(res.status, 201);
+      assert.isObject(res.body);
+      assert.isString(res.body.message);
+      assert.isObject(res.body.data);
     });
-
-    it("It should not submit a survey : empty payload", async () => {
-      const payload = {};
-      const response = await chai
+    it("It should not submit a survey: invalid payload", async () => {
+      const { _id } = await DB.createSurvey(survey);
+      const payload = { ...invalidAnswer, surveyId: _id };
+      const res = await chai
         .request(server)
-        .post("/api/survey/survey-answer")
+        .post(`/api/v1/surveys/${_id}/answers`)
         .send(payload);
-      assert.equal(response.status, 422);
-      assert.typeOf(response.body, "object");
-    });
 
-    it("It should not submit a survey : payload overflow", async () => {
-      let payload = await answerData();
-      payload = { ...payload, test: "test" };
-      const response = await chai
-        .request(server)
-        .post("/api/survey/survey-answer")
-        .send(payload);
-      assert.equal(response.status, 422);
-      assert.typeOf(response.body, "object");
-    });
-
-    it("It should not submit a survey : payload underflow", async () => {
-      let payload = await answerData();
-      delete payload.answer;
-      const response = await chai
-        .request(server)
-        .post("/api/survey/survey-answer")
-        .send(payload);
-      assert.equal(response.status, 422);
-      assert.typeOf(response.body, "object");
-    });
-
-    it("It should not submit a survey : invalid payload", async () => {
-      const payload = await invalidAnswerData();
-      const response = await chai
-        .request(server)
-        .post("/api/survey/survey-answer")
-        .send(payload);
-      assert.equal(response.status, 422);
-      assert.typeOf(response.body, "object");
+      assert.equal(res.status, 422);
+      assert.isObject(res.body);
     });
   });
 
-  // GET testing getting survey answer api
-  describe("GET api/survey/survey-answers", () => {
-    it("It should get all the survey submission", async () => {
-      const payload = await answerData();
-
-      await DB.submitSurvey(payload);
-
-      const response = await chai
+  // GET get all survey answers by survey id
+  describe("GET /api/v1/surveys/:surveyId/answers", () => {
+    it("It should return all survey answers by survey id", async () => {
+      const { _id } = await DB.createSurvey(survey);
+      const payload = { ...answer, surveyId: _id };
+      await chai
         .request(server)
-        .get("/api/survey/survey-answers");
-      assert.equal(response.status, 200);
-      assert.typeOf(response.body, "array");
-      assert.equal(response.body[0].userId, payload.userId);
-      assert.equal(response.body[0].questionId, payload.questionId);
-    });
-  });
+        .post(`/api/v1/surveys/${_id}/answers`)
+        .send(payload);
 
-  // GET testing getting all survey submission by user id api
-  describe("GET api/survey/survey-answers/user/:userId", () => {
-    it("It should get the survey submission by id", async () => {
-      const payload = await answerData();
-
-      const { userId } = await DB.submitSurvey(payload);
-
-      const response = await chai
+      const res = await chai
         .request(server)
-        .get("/api/survey/survey-answers/user/" + userId);
-      assert.equal(response.status, 200);
-      assert.typeOf(response.body, "array");
-      assert.equal(response.body[0].question, payload.question);
+        .get(`/api/v1/surveys/${_id}/answers`);
+
+      assert.equal(res.status, 200);
+      assert.isArray(res.body);
+      assert.isObject(res.body[0]);
     });
 
-    it("It should not get the survey submissions : invalid id", async () => {
-      const userId = randomId;
-      const response = await chai
-        .request(server)
-        .get("/api/survey/survey-answers/user/" + userId);
-      assert.equal(response.status, 404);
-      assert.typeOf(response.body, "object");
-    });
+    // it("It should not return all survey answers by survey id : invalid id", async () => {
+    //   const res = await chai
+    //     .request(server)
+    //     .get(`/api/v1/surveys/${randomId}/answers`);
 
-    it("It should not get the survey submissions : null id", async () => {
-      const userId = null;
-      const response = await chai
-        .request(server)
-        .get("/api/survey/survey-answers/user/" + userId);
-      assert.equal(response.status, 404);
-      assert.typeOf(response.body, "object");
-    });
+    //   assert.equal(res.status, 400);
+    // });
   });
 });

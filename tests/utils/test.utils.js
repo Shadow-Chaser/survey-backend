@@ -43,6 +43,31 @@ module.exports = {
     user: faker.random.alphaNumeric(),
     test: faker.random.words(),
   },
+  answer: {
+    answers: [
+      {
+        choosenOption: faker.lorem.words(1),
+        questionId: faker.database.mongodbObjectId(),
+      },
+      {
+        choosenOption: faker.lorem.words(1),
+        questionId: faker.database.mongodbObjectId(),
+      },
+    ],
+  },
+  invalidAnswer: {
+    answers: [
+      {
+        choosenOption: faker.datatype.float,
+        questionId: faker.random.alpha(),
+      },
+      {
+        choosenOption: faker.lorem.words(1),
+        questionId: faker.random.alphaNumeric(),
+      },
+    ],
+    extra: faker.lorem.words(),
+  },
 
   JWTToken: async () => {
     return DB.generateJWTToken(
@@ -50,4 +75,5 @@ module.exports = {
       faker.internet.email()
     );
   },
+  randomId: faker.random.alphaNumeric(),
 };

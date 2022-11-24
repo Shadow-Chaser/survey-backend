@@ -7,7 +7,7 @@ module.exports = {
   @desc   Register new user
   @route  POST /api/user/signup
   @access Public
-*/
+  */
 
   signUp: async (req, res) => {
     const { error } = await userValidator(req.body);
@@ -15,16 +15,17 @@ module.exports = {
       return res.status(422).json({ message: error.message });
     }
     let user = await DB.getUserByEmail(req.body.email);
-    if (user) return res.status(400).send("User already registered!");
+    if (user) return res.status(400).send("User already Registered!");
 
     user = req.body;
+    console.log("🚀🚀 user -->", user);
     user.password = await bcrypt.hash(user.password, 10);
 
     try {
       const { id, name, email } = await DB.createUser(user);
 
       res.status(201).send({
-        message: "You have been registered successfully!",
+        message: "You have been registered S!",
         data: { id, name, email },
       });
     } catch (err) {
@@ -50,7 +51,7 @@ module.exports = {
         message: "You have been authenticated!",
         data: { access_token },
       });
-    } catch {
+    } catch (err) {
       return res.status(400).send(err.message);
     }
   },

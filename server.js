@@ -5,7 +5,7 @@ const dbConnection = require("./configs/dbConnection");
 const { PORT, NODE_ENV, DB_DRIVER } = require("./configs/env.config");
 
 dbConnection()
-  .then(() => console.log(`Connected to ${NODE_ENV} Database`))
+  .then(() => console.log(`Connected to ${NODE_ENV} Database `))
   .catch((err) => console.log(err));
 
 const server = app.listen(PORT, () => {

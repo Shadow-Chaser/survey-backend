@@ -8,7 +8,7 @@
     "dev:docker:down": "docker-compose down --remove-orphans",
     "dev:docker": "docker-compose up",
     "dev:docker:rebuild": "docker-compose build --no-cache",
-    "test": "mocha tests/answer.test.js --timeout 30000 --exit"
+    "test": "mocha tests/**/*.js --timeout 30000 --exit"
   },
   "author": "Ashab Hussan",
   "license": "MIT",

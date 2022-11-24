@@ -6,7 +6,7 @@ app.use(cors());
 app.use(express.json());
 
 app.get("/", (req, res) => {
-  res.send("Hello World e!");
+  res.send("Hello World!");
 });
 
 require("./routes")(app);

@@ -1,24 +1,34 @@
 const {
-  createSurveyQuestion,
-  getAllSurveyQuestions,
-  getSurveyQuestionById,
-} = require("../controllers/surveyQuestion.controller");
+  submitAnswerBySurveyId,
+  getAllAnswerBySurveyId,
+  getAnswerByAnswerId,
+} = require("../controllers/answer.controller");
 
 const {
-  submitSurveyAnswer,
-  getAllSurveyAnswers,
-  getAllSurveyAnswersByUser,
-  getAllSurveyAnswersByQuestion,
-} = require("../controllers/surveyAnswer.controller");
+  createSurvey,
+  getAllSurvey,
+  getSurveyById,
+  updateSurveyById,
+  deleteSurveyById,
+} = require("../controllers/survey.controller");
+const authorizeMiddleware = require("../middlewares/authorize.middleware");
 
-const router = require("express").Router();
+const surveyRouter = require("express").Router();
 
-router.route("/survey-question").post(createSurveyQuestion);
-router.route("/survey-answer").post(submitSurveyAnswer);
-router.route("/survey-questions").get(getAllSurveyQuestions);
-router.route("/survey-question/:id").get(getSurveyQuestionById);
-router.route("/survey-answers/user/:userId").get(getAllSurveyAnswersByUser);
-router.route("/survey-answers/question/:id").get(getAllSurveyAnswersByQuestion);
-router.route("/survey-answers").get(getAllSurveyAnswers);
+surveyRouter
+  .route("/")
+  .post(authorizeMiddleware, createSurvey)
+  .get(getAllSurvey);
+surveyRouter
+  .route("/:surveyId")
+  .get(getSurveyById)
+  .put(authorizeMiddleware, updateSurveyById)
+  .delete(authorizeMiddleware, deleteSurveyById);
+surveyRouter
+  .route("/:surveyId/answers")
+  .post(submitAnswerBySurveyId)
+  .get(getAllAnswerBySurveyId);
 
-module.exports = router;
+surveyRouter.route("/:surveyId/answers/:answerId").get(getAnswerByAnswerId);
+
+module.exports = surveyRouter;

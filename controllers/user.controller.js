@@ -1,44 +1,57 @@
 const DB = require("../configs/db.config");
+const { userValidator } = require("../validators/user.validator");
+const bcrypt = require("bcrypt");
 
-/*
+module.exports = {
+  /*
   @desc   Register new user
   @route  POST /api/user/signup
   @access Public
 */
-const signUp = async (req, res) => {
-  let user = await DB.getUserByEmail(req.body.email);
-  if (user) return res.status(400).send("User already registered!");
 
-  user = new User({
-    name: req.body.name,
-    email: req.body.email,
-    password: req.body.password,
-  });
+  signUp: async (req, res) => {
+    const { error } = await userValidator(req.body);
+    if (error) {
+      return res.status(422).json({ message: error.message });
+    }
+    let user = await DB.getUserByEmail(req.body.email);
+    if (user) return res.status(400).send("User already registered!");
 
-  if (user.password) user.password = await bcrypt.hash(user.password, 10);
+    user = req.body;
+    user.password = await bcrypt.hash(user.password, 10);
 
-  try {
-    const result = await user.save();
+    try {
+      const { id, name, email } = await DB.createUser(user);
 
-    // Email verification
-    const verificationToken = await getVerificationToken(result._id);
-    const verifyLink = `${process.env.BASE_URL}/user/verify/${verificationToken.userId}/${verificationToken.token}`;
-    await sendEmail(
-      user.email,
-      "Verify Email",
-      verifyLink,
-      result.name,
-      "verifyEmail.ejs"
-    );
+      res.status(201).send({
+        message: "You have been registered successfully!",
+        data: { id, name, email },
+      });
+    } catch (err) {
+      return res.status(400).send(err.message);
+    }
+  },
 
-    res.status(201).send({
-      data: {
-        name: result.name,
-        email: result.email,
-        msg: "An Email will be sent to your account to verify!",
-      },
-    });
-  } catch (err) {
-    return res.status(400).send(err.message);
-  }
+  /*
+  @desc   Authenticate existing user
+  @route  POST /api/user/signin
+  @access Public
+  */
+  signIn: async (req, res) => {
+    try {
+      let user = await DB.getUserByEmail(req.body.email);
+      if (!user) return res.status(400).send("Invalid email or password!");
+
+      const validUser = await bcrypt.compare(req.body.password, user.password);
+      if (!validUser) return res.status(400).send("Invalid email or password!");
+
+      const access_token = await DB.generateJWTToken(user._id, user.email);
+      res.status(200).send({
+        message: "You have been authenticated!",
+        data: { access_token },
+      });
+    } catch {
+      return res.status(400).send(err.message);
+    }
+  },
 };

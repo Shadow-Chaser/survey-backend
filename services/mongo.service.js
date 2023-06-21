@@ -1,37 +1,55 @@
-const SurveyQuestion = require("../models/surveyQuestion.model");
-const SurveyAnswer = require("../models/surveyAnswer.model");
 const User = require("../models/user.model");
+const jwt = require("jsonwebtoken");
+const Survey = require("../models/survey.model");
+const Answer = require("../models/answer.model");
+const { JWT_SECRET_KEY } = require("../configs/env.config");
 
-exports.createSurvey = async (data) => {
-  return SurveyQuestion.create(data);
-};
+module.exports = {
+  createSurvey: async (data) => {
+    return Survey.create(data);
+  },
 
-exports.createUser = async (data) => {
-  return User.create(data);
-};
+  getAllSurvey: async () => {
+    return Survey.find({});
+  },
 
-exports.getUserByEmail = async (email) => {
-  return User.findOne({ email: email });
-};
+  getSurveyById: async (id) => {
+    return Survey.findById(id);
+  },
 
-exports.submitSurvey = async (data) => {
-  return SurveyAnswer.create(data);
-};
-exports.getAllSurvey = async () => {
-  return SurveyQuestion.find({});
-};
-exports.getAllAnswer = async () => {
-  return SurveyAnswer.find({});
-};
+  updateSurveyById: async (id, update) => {
+    return Survey.findByIdAndUpdate(id, update);
+  },
 
-exports.getSurveyById = async (id) => {
-  return SurveyQuestion.findById(id);
-};
+  deleteSurveyById: async (id) => {
+    return Survey.findByIdAndDelete(id);
+  },
 
-exports.getAnswersByUser = async (userId) => {
-  return SurveyAnswer.find({ userId: userId });
-};
+  createUser: async (data) => {
+    return User.create(data);
+  },
 
-exports.getAnswersBySurvey = async (surveyId) => {
-  return SurveyAnswer.find({ questionId: surveyId });
+  getUserByEmail: async (email) => {
+    return User.findOne({ email: email });
+  },
+
+  generateJWTToken: async (id, email) => {
+    const token = jwt.sign({ _id: id, email: email }, JWT_SECRET_KEY, {
+      expiresIn: "1day",
+    });
+
+    return token;
+  },
+
+  submitAnswerBySurveyId: async (data) => {
+    return Answer.create(data);
+  },
+
+  getAllAnswerBySurveyId: async (surveyId) => {
+    return Answer.find({ surveyId: surveyId });
+  },
+
+  getAnswerByAnswerId: async (answerId) => {
+    return Answer.findById(answerId);
+  },
 };

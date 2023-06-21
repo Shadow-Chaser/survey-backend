@@ -1,36 +1,34 @@
 const { Schema, model } = require("mongoose");
-const jwt = require("jsonwebtoken");
 
-const userSchema = Schema({
-  name: {
-    type: String,
-    required: true,
+const userSchema = Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+    },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      minLength: [5, "Minimum Length of the email must be 5"],
+      maxLength: 255,
+    },
+    password: {
+      type: String,
+      required: true,
+      minLength: 5,
+      maxLength: 1024,
+    },
   },
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-    minLength: [5, "Minimum Length of the email must be 5"],
-    maxLength: 255,
-  },
-  password: {
-    type: String,
-    required: true,
-    minLength: 5,
-    maxLength: 1024,
-  },
+  {
+    timestamps: true,
+  }
+);
+
+userSchema.virtual("id").get(() => {
+  return this._id;
 });
 
-userSchema.methods.generateJWTToken = function () {
-  const token = jwt.sign(
-    { _id: this._id, email: this.email },
-    process.env.JWT_SECRET_KEY,
-    {
-      expiresIn: "1day",
-    }
-  );
-
-  return token;
-};
+userSchema.set("toJSON", { virtuals: true });
 
 module.exports = model("User", userSchema);
